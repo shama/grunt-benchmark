@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     grunt.file.clearRequireCache(files);
     
     async.forEachSeries(files, function(file, nextFile) {
-      var benchmarks = require(path.resolve(__dirname, '..', file));
+      var benchmarks = require(path.join(process.cwd(), file));
 
       // if only a single benchmark
       if (typeof benchmarks === 'function') {
