@@ -22,6 +22,7 @@ var times = 0;
 
 module.exports = {
   'setUp': function(done) {
+    // ensure that your `ulimit -n` is higher than amount of files
     createFiles(100, path.join(watchDir, 'one'));
     createFiles(100, path.join(watchDir, 'two'));
     createFiles(100, path.join(watchDir, 'three'));
@@ -38,6 +39,9 @@ module.exports = {
 	  	grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = false;');
       grunt.file.delete(path.join(watchDir, 'three', 'four', 'test-' + times + '.js'));
       times++;
-	  }, done);
+	  }, function(result) {
+      //console.log(result);
+      done();
+    });
   }
 };
