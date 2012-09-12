@@ -1,0 +1,38 @@
+{
+  "name": "grunt-benchmark",
+  "description": "Grunt task for benchmarking",
+  "version": "0.1.0",
+  "homepage": "https://github.com/shama/grunt-benchmark",
+  "author": {
+    "name": "Kyle Robinson Young",
+    "email": "kyle@dontkry.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shama/grunt-benchmark.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shama/grunt-benchmark/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/shama/grunt-benchmark/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/grunt-benchmark.js",
+  "bin": "bin/grunt-benchmark",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "dependencies": {
+    "ben": "*",
+    "grunt": "git://github.com/cowboy/grunt.git#e8977727186c45722bf9d0bd893a8aa71fdb4ba3"
+  },
+  "keywords": [
+    "gruntplugin", "benchmark"
+  ]
+}
