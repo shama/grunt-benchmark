@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var grunt = require('grunt');
 
@@ -18,7 +20,7 @@ module.exports = {
     done();
   },
   'jshint task': function(done) {
-	  jshintTask(function() {}, function(result) {
+    jshintTask(function() {}, function(result) {
       //console.log(result);
       done();
     });

@@ -1,3 +1,5 @@
+'use strict';
+
 var path = require('path');
 var grunt = require('grunt');
 
@@ -35,11 +37,11 @@ module.exports = {
     done();
   },
   'watch task with a few hundred files': function(done) {
-	  watchTask(function() {
-	  	grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = false;');
+    watchTask(function() {
+      grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = false;');
       grunt.file.delete(path.join(watchDir, 'three', 'four', 'test-' + times + '.js'));
       times++;
-	  }, function(result) {
+    }, function(result) {
       //console.log(result);
       done();
     });
