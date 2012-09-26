@@ -44,16 +44,17 @@ module.exports = function(grunt) {
       async.forEachSeries(benchmarks, function(benchmark, nextBenchmark) {
         var name = (benchmark.name !== '0') ? ' "' + benchmark.name + '"' : '';
         grunt.log.writeln('Benchmarking' + name + ' [' + file + '] x' + times + '...');
+        var context = {};
 
         async.series([function(n) {
-          setUp(n);
+          setUp.call(context, n);
         }, function(n) {
-          ben(times, benchmark.fn, function(ms) {
+          ben(times, grunt.util._.bind(benchmark.fn, context), function(ms) {
             grunt.log.ok(ms + ' ms per iteration');
             n();
           });
         }, function(n) {
-          tearDown(n);
+          tearDown.call(context, n);
         }], nextBenchmark);
 
       }, nextFile);

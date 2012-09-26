@@ -7,7 +7,10 @@ var watchBase = path.resolve(__dirname, 'watch');
 var watchDir = path.resolve(watchBase, 'watch');
 
 var watchTask = require('../lib/grunt-benchmark').spawnTask('watch', {
-  trigger: 'Waiting...',
+  // false to trigger on any output
+  // We want to benchmark how fast watch triggers a task
+  // not the task itself
+  trigger: false,
   base: watchBase,
   gruntfile: path.resolve(watchBase, 'Gruntfile.js')
 });
@@ -19,9 +22,6 @@ function createFiles(num, dir) {
   }
 }
 
-// Counter for where we are in times benchmark is ran
-var times = 0;
-
 module.exports = {
   'setUp': function(done) {
     // ensure that your `ulimit -n` is higher than amount of files
@@ -30,20 +30,36 @@ module.exports = {
     createFiles(100, path.join(watchDir, 'three'));
     createFiles(100, path.join(watchDir, 'three', 'four'));
     createFiles(100, path.join(watchDir, 'three', 'four', 'five', 'six'));
+    // Counter for where we are in times benchmark is ran
+    this.times = 0;
     done();
   },
   'tearDown': function(done) {
     grunt.file.delete(watchDir);
     done();
   },
-  'watch task with a few hundred files': function(done) {
+  'trigger watch task with write': function(done) {
+    var that = this;
     watchTask(function() {
-      grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = false;');
-      grunt.file.delete(path.join(watchDir, 'three', 'four', 'test-' + times + '.js'));
-      times++;
-    }, function(result) {
-      //console.log(result);
-      done();
-    });
+      grunt.file.write(path.join(watchDir, 'one', 'test-99.js'), 'var test = "' + that.times + '"');
+      grunt.log.write(that.times + ' ');
+      that.times++;
+    }, done);
+  },
+  'trigger watch task with delete': function(done) {
+    var that = this;
+    watchTask(function() {
+      grunt.file.delete(path.join(watchDir, 'three', 'four', 'test-' + that.times + '.js'));
+      grunt.log.write(that.times + ' ');
+      that.times++;
+    }, done);
+  },
+  'trigger watch task with add': function(done) {
+    var that = this;
+    watchTask(function() {
+      grunt.file.write(path.join(watchDir, 'one', 'added-' + that.times + '.js'), 'var test = false;');
+      grunt.log.write(that.times + ' ');
+      that.times++;
+    }, done);
   }
 };
