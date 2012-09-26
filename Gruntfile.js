@@ -23,13 +23,16 @@ module.exports = function(grunt) {
         src: ['Gruntfile.js', 'bin/*.js', 'lib/*.js', 'tasks/*.js', 'benchmarks/*.js']
       }
     },
+    nodeunit: {
+      files: ['test/**/*_test.js']
+    },
     watch: {
       all: {
-        files: '<%= jshint.all.src %>',
+        files: ['<%= jshint.all.src %>', '<%= nodeunit.files %>'],
         tasks: ['default']
       }
     }
   });
   grunt.loadTasks('tasks');
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['jshint', 'nodeunit']);
 };
