@@ -1,14 +1,7 @@
 module.exports = function(grunt) {
   'use strict';
   grunt.initConfig({
-    jshint: {
-      all: {
-        src: ['**/*.js']
-      },
-      options: {
-        node: true
-      }
-    },
+    nothing: {},
     watch: {
       all: {
         files: ['**/*.js'],
@@ -16,5 +9,7 @@ module.exports = function(grunt) {
       }
     }
   });
-  grunt.registerTask('default', ['jshint']);
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadTasks('tasks');
+  grunt.registerTask('default', ['nothing']);
 };

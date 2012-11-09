@@ -29,10 +29,17 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "ben": "*",
-    "grunt": "git://github.com/cowboy/grunt.git#e8977727186c45722bf9d0bd893a8aa71fdb4ba3"
+    "ben": "*"
   },
   "keywords": [
-    "gruntplugin", "benchmark"
-  ]
+    "gruntplugin",
+    "benchmark"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.0a",
+    "grunt-contrib-jshint": "~0.1.0",
+    "grunt-contrib-nodeunit": "~0.1.0",
+    "grunt-contrib-watch": "~0.1.4",
+    "ncp": "~0.2.6"
+  }
 }

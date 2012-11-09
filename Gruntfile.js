@@ -1,5 +1,5 @@
-'use strict';
 module.exports = function(grunt) {
+  'use strict';
   grunt.initConfig({
     benchmark: {
       test: {
@@ -16,9 +16,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      options: {
-        jshintrc: '.jshintrc'
-      },
+      options: { jshintrc: '.jshintrc' },
       all: {
         src: ['Gruntfile.js', 'bin/*.js', 'lib/*.js', 'tasks/*.js', 'benchmarks/*.js']
       }
@@ -33,6 +31,9 @@ module.exports = function(grunt) {
       }
     }
   });
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadTasks('tasks');
   grunt.registerTask('default', ['jshint', 'nodeunit']);
 };
