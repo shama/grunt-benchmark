@@ -1,7 +1,7 @@
 {
   "name": "grunt-benchmark",
   "description": "Grunt task for benchmarking",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/shama/grunt-benchmark",
   "author": {
     "name": "Kyle Robinson Young",
@@ -36,7 +36,7 @@
     "benchmark"
   ],
   "devDependencies": {
-    "grunt": "~0.4.0a",
+    "grunt": "~0.4.0rc3",
     "grunt-contrib-jshint": "~0.1.0",
     "grunt-contrib-nodeunit": "~0.1.0",
     "grunt-contrib-watch": "~0.1.4",

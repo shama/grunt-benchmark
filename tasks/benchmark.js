@@ -14,14 +14,11 @@ module.exports = function(grunt) {
   var async = grunt.util.async;
 
   grunt.registerMultiTask('benchmark', 'Grunt task for benchmarking grunt tasks', function() {
-    var files = grunt.file.expandFiles(grunt.util._.pluck(this.files, 'src'));
     var options = this.options();
     var times = options.times || 1;
     var done = this.async();
-
-    grunt.file.clearRequireCache(files);
     
-    async.forEachSeries(files, function(file, nextFile) {
+    async.forEachSeries(this.file.src, function(file, nextFile) {
       var benchmarks = require(path.join(process.cwd(), file));
 
       // if only a single benchmark
