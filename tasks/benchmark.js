@@ -14,8 +14,9 @@ module.exports = function(grunt) {
   var async = grunt.util.async;
 
   grunt.registerMultiTask('benchmark', 'Grunt task for benchmarking grunt tasks', function() {
-    var options = this.options();
-    var times = options.times || 1;
+    var options = this.options({
+      times: 1
+    });
     var done = this.async();
     
     async.forEachSeries(this.file.src, function(file, nextFile) {
@@ -40,13 +41,13 @@ module.exports = function(grunt) {
       // run benchmarks
       async.forEachSeries(benchmarks, function(benchmark, nextBenchmark) {
         var name = (benchmark.name !== '0') ? ' "' + benchmark.name + '"' : '';
-        grunt.log.writeln('Benchmarking' + name + ' [' + file + '] x' + times + '...');
+        grunt.log.writeln('Benchmarking' + name + ' [' + file + '] x' + options.times + '...');
         var context = {};
 
         async.series([function(n) {
           setUp.call(context, n);
         }, function(n) {
-          ben(times, grunt.util._.bind(benchmark.fn, context), function(ms) {
+          ben(options.times, grunt.util._.bind(benchmark.fn, context), function(ms) {
             grunt.log.ok(ms + ' ms per iteration');
             n();
           });
