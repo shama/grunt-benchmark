@@ -5,7 +5,8 @@
   "homepage": "https://github.com/shama/grunt-benchmark",
   "author": {
     "name": "Kyle Robinson Young",
-    "email": "kyle@dontkry.com"
+    "email": "kyle@dontkry.com",
+    "url": "http://dontkry.com"
   },
   "repository": {
     "type": "git",
