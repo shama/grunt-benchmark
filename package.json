@@ -22,7 +22,6 @@
     }
   ],
   "main": "lib/grunt-benchmark.js",
-  "bin": "bin/grunt-benchmark",
   "engines": {
     "node": ">= 0.6.0"
   },
@@ -37,10 +36,10 @@
     "benchmark"
   ],
   "devDependencies": {
-    "grunt": "~0.4.0rc3",
+    "grunt": "~0.4.0rc4",
     "grunt-contrib-jshint": "~0.1.0",
     "grunt-contrib-nodeunit": "~0.1.0",
-    "grunt-contrib-watch": "~0.1.4",
+    "grunt-contrib-watch": "~0.2.0",
     "ncp": "~0.2.6"
   }
 }
