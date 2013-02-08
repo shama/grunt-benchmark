@@ -23,7 +23,7 @@
   ],
   "main": "lib/grunt-benchmark.js",
   "engines": {
-    "node": ">= 0.6.0"
+    "node": ">= 0.8.0"
   },
   "scripts": {
     "test": "grunt nodeunit"
@@ -36,10 +36,10 @@
     "benchmark"
   ],
   "devDependencies": {
-    "grunt": "~0.4.0rc4",
-    "grunt-contrib-jshint": "~0.1.0",
-    "grunt-contrib-nodeunit": "~0.1.0",
-    "grunt-contrib-watch": "~0.2.0",
+    "grunt": "~0.4.0rc7",
+    "grunt-contrib-jshint": "~0.1.1rc6",
+    "grunt-contrib-nodeunit": "~0.1.2rc6",
+    "grunt-contrib-watch": "~0.2.0rc7",
     "ncp": "~0.2.6"
   }
 }

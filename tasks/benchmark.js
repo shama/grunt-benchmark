@@ -7,9 +7,9 @@
  */
 
 module.exports = function(grunt) {
-	'use strict';
+  'use strict';
 
-	var ben = require('ben').async;
+  var ben = require('ben').async;
   var path = require('path');
   var async = grunt.util.async;
 
@@ -18,8 +18,8 @@ module.exports = function(grunt) {
       times: 1
     });
     var done = this.async();
-    
-    async.forEachSeries(this.file.src, function(file, nextFile) {
+
+    async.forEachSeries(this.filesSrc, function(file, nextFile) {
       var benchmarks = require(path.join(process.cwd(), file));
 
       // if only a single benchmark
