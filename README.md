@@ -37,6 +37,7 @@ grunt.initConfig({
   benchmark: {
     all: {
       src: ['benchmarks/*.js'],
+      dest: 'benchmarks/results.csv',
       options: {
         times: 10
       }
@@ -53,6 +54,8 @@ Running "benchmark:all" (benchmark) task
 Benchmarking "0" [benchmarks/test-timeout.js] x10...
 >> 101 ms per iteration
 ```
+
+Benchmark name, date, times and per iteration will be logged in a csv format.
 
 ### Benchmarking Tasks
 Included is a helper, `spawnTask`, for running Grunt tasks within your
@@ -80,7 +83,7 @@ module.exports = function(done) {
 
   // start the watch task
   watchTask([function() {
-    
+
     // After trigger found, run this sync function
     // this will trigger the watch task
     grunt.file.write('path/to/file.js'), 'var test = false;');
@@ -129,10 +132,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 Lint and test your code using [grunt][grunt].
 
 ## Release History
+* 0.1.3 Ability to log dest to a csv file. Support Grunt@0.4.0rc7.
 * 0.1.2 Update to work with Grunt@0.4.0rc3.
 * 0.1.1 Fix require path
 * 0.1.0 Initial release
 
 ## License
-Copyright (c) 2012 Kyle Robinson Young  
+Copyright (c) 2012 Kyle Robinson Young
 Licensed under the MIT license.

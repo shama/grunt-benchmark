@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         ben(options.times, grunt.util._.bind(benchmark.fn, context), function(ms) {
           grunt.log.ok(ms + ' ms per iteration');
           if (dest) {
-            if (!grunt.file.exists(dest)) grunt.file.write(dest, 'name,date,times,iteration');
+            if (!grunt.file.exists(dest)) grunt.file.write(dest, 'name,date,times,iteration\n');
             var today = (new Date()).toString();
             fs.appendFileSync(dest, [name, '"' + today + '"', options.times, ms].join(',') + '\n');
           }
