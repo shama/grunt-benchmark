@@ -4,14 +4,17 @@ module.exports = function(grunt) {
     benchmark: {
       test: {
         src: ['benchmarks/test.js'],
+        dest: 'benchmarks/test.csv',
         options: { times: 10 }
       },
       watch: {
         src: ['benchmarks/watch.js'],
+        dest: 'benchmarks/watch.csv',
         options: { times: 10 }
       },
       jshint: {
         src: ['benchmarks/jshint.js'],
+        dest: 'benchmarks/jshint.csv',
         options: { times: 10 }
       }
     },
