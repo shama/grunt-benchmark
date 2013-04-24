@@ -10,6 +10,10 @@ module.exports = function(grunt) {
         src: ['benchmarks/loneFunction.js'],
         dest: 'results/loneFunction.csv'
       },
+      mixedSuite: {
+        src: ['benchmarks/mixedSuite.js'],
+        dest: 'results/mixedSuite.csv'
+      },
       fibonacci: {
         src: ['benchmarks/fibonacci.js'],
         dest: 'results/fibonacci.csv'

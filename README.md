@@ -161,9 +161,6 @@ module.exports = {
 };
 ```
 
-<!--
-TODO: Implement this
-
 #### `exports.tests` as an Array:
 Set `exports.tests` to an Array of functions and or [Benchmark.js test options].
 
@@ -193,7 +190,6 @@ module.exports = {
     }
   ]
 };
--->
 
 
 ### Benchmarking Tasks

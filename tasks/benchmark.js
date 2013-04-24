@@ -14,6 +14,14 @@ module.exports = function(grunt) {
   var fs = require('fs');
   var async = grunt.util.async;
   
+  function objectify(obj) {
+      // Turn into an object
+      if (typeof obj === 'function') {
+        obj = { fn: obj };
+      }
+      return obj;
+  }
+  
   function logStart(name, src) {
     grunt.log.writeln('Benchmarking '+(name ? name+' ' : '')+'[' + src + ']...');
   }
@@ -115,6 +123,33 @@ module.exports = function(grunt) {
       var tests = benchmarks.tests;
       delete benchmarks.tests;
       
+      if (Array.isArray(tests)) {
+        // Ensure all tests are test objects with valid names
+        tests = tests.map(function(obj, index) {
+          obj = objectify(obj);
+          
+          // Explicitly give a name or the output of Benchmark.js' filter('winner') command is an empty string
+          if (!obj.name) {
+            obj.name = '<Test #'+(index+1)+'>';
+          }
+          
+          return obj;
+        });
+      }
+      else {
+        // Convert tests to an array of test objects
+        tests = grunt.util._.map(tests, function(obj, key) {
+          obj = objectify(obj);
+          
+          // name can be specified as the key or as a property of the test object
+          if (!obj.name) {
+            obj.name = key;
+          }
+          
+          return obj;
+        });
+      }
+      
       // Setup listeners
       var onCycle = benchmarks.onCycle;
       benchmarks.onCycle = function(event) {
@@ -151,18 +186,7 @@ module.exports = function(grunt) {
       var suite = new Benchmark.Suite(suiteName, benchmarks);
       
       // TODO: tests as either object or array
-      for (var testName in tests) {
-        var testData = tests[testName];
-        if (typeof testData === 'function') {
-          // A test with no parameters, named by its key
-          suite.add(testName, testData);
-        }
-        else {
-          // A test with parameters, named optionally by its key
-          testData.name = testData.name || testName;
-          suite.add(testData);
-        }
-      }
+      tests.forEach(function(test) { suite.add(test) });
       
       logStart('suite "'+suiteName+'"', src);
       
