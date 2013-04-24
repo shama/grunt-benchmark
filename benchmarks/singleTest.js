@@ -5,4 +5,4 @@ module.exports = {
   fn: function(done) {
     setTimeout(done, 5);
   }
-}
+};

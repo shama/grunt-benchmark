@@ -37,10 +37,11 @@ module.exports = function(grunt) {
       
       fs.appendFileSync(dest, line);
     }
-  };
+  }
 
   function runBench(src, dest, options, next) {
     var benchmarkOptions;
+    var onComplete;
     var benchmarks = require(path.join(process.cwd(), src));
 
     if (typeof benchmarks === 'function') {
@@ -67,7 +68,7 @@ module.exports = function(grunt) {
     
     // Run a single benchmark
     if (benchmarkOptions) {
-      var onComplete = benchmarkOptions.onComplete;
+      onComplete = benchmarkOptions.onComplete;
       benchmarkOptions.onComplete = function() {
         if (typeof onComplete === 'function') {
           onComplete.apply(this, arguments);
@@ -128,7 +129,7 @@ module.exports = function(grunt) {
         writeResults(target, dest);
       };
         
-      var onComplete = benchmarks.onComplete;
+      onComplete = benchmarks.onComplete;
       benchmarks.onComplete = function() {
         if (typeof onComplete === 'function') {
           onComplete.apply(this, arguments);
