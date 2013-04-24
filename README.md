@@ -18,7 +18,7 @@ grunt.loadNpmTasks('grunt-benchmark');
 ## Documentation
 
 ### Basic Usage Example
-Create a `benchmarks` folder and create a benchmark script within that folder,
+Create a `benchmarks/` folder and create a benchmark script within that folder,
 ie `fibonacci.js`:
 
 ```javascript
@@ -31,7 +31,7 @@ module.exports = function() {
 };
 ```
 
-The setup your Gruntfile config to run the benchmarks within the `benchmarks`:
+The setup your Gruntfile config to run the benchmarks within the `benchmarks/` folder:
 
 ```javascript
 grunt.initConfig({
