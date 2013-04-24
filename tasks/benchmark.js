@@ -180,7 +180,9 @@ module.exports = function(grunt) {
           var fastestTests = Benchmark.filter(this, 'fastest');
           
           // Only bother if more than one test
-          if (tests.length <= 1) return;
+          if (tests.length <= 1) {
+            return;
+          }
           
           // Get the testest test
           var fastest = fastestTests[0];
@@ -210,8 +212,9 @@ module.exports = function(grunt) {
           var timesFaster = (fastest.hz/secondFastest.hz);
           
           var isAre = 'test is';
-          if (fastestTests.length > 1)
+          if (fastestTests.length > 1) {
             isAre = 'tests are';
+          }
           
           var message = 'Fastest ' + isAre + ' ' + grunt.log.wordlist([fastestNames], { separator: ' and ' });
           
@@ -219,20 +222,25 @@ module.exports = function(grunt) {
           var increaseColor = false;
           var places = 1;
           
-          if (timesFaster >= 50)
+          if (timesFaster >= 50) {
             increaseColor = 'red';
-          else if (timesFaster > 10)
+          }
+          else if (timesFaster > 10) {
             increaseColor = 'yellow';
-          else if (timesFaster > 1.5)
+          }
+          else if (timesFaster > 1.5) {
             increaseColor = 'green';
+          }
           
           // Add a few more places for small increases
-          if (timesFaster < 2)
+          if (timesFaster < 2) {
             places = 2;
+          }
           
           // Only bother if there wasn't a tie
-          if (fastestTests.length !== tests.length)
+          if (fastestTests.length !== tests.length) {
             message += ' at ' + grunt.log.wordlist([Benchmark.formatNumber(timesFaster.toFixed(places))+'x'], { color: increaseColor }) + ' faster than ' + grunt.log.wordlist(secondFastestNames, { separator: ' and '});
+          }
           
           grunt.log.writeln(message);
         }
