@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = function(done) {
-  setTimeout(done, 100);
+  setTimeout(done, 5);
 };
