@@ -190,6 +190,7 @@ module.exports = {
     }
   ]
 };
+```
 
 
 ### Benchmarking Tasks
