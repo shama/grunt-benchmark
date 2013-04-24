@@ -23,7 +23,7 @@ module.exports = function(grunt) {
   }
   
   function logStart(name, src) {
-    grunt.log.writeln('Benchmarking '+(name ? name+' ' : '')+'[' + src + ']...');
+    grunt.log.writeln('\nBenchmarking '+(name ? name+' ' : '')+'[' + src + ']...');
   }
   
   function writeResults(target, dest) {
@@ -74,35 +74,14 @@ module.exports = function(grunt) {
       benchmarkOptions = benchmarks;
     }
     
+    var runnable;
+    
     // Run a single benchmark
     if (benchmarkOptions) {
-      onComplete = benchmarkOptions.onComplete;
-      benchmarkOptions.onComplete = function() {
-        if (typeof onComplete === 'function') {
-          onComplete.apply(this, arguments);
-        }
-        
-        // Catch errors
-        if (this.error) {
-          grunt.log.error(this.error);
-        }
-        else {
-          grunt.log.ok(this);
-        }
-        
-        writeResults(this, dest);
-        
-        // Run the next test
-        next();
-      };
-      
       // Create a single benchmark
-      var benchmark = new Benchmark(benchmarkOptions);
+      runnable = new Benchmark(benchmarkOptions);
       
       logStart('"'+benchmarkOptions.name+'"', src);
-      
-      // Run the benchmark
-      benchmark.run();
     }
     else {
       /*
@@ -159,11 +138,22 @@ module.exports = function(grunt) {
         
         var target = event.target;
         
-        grunt.log.ok('   '+target);
+        if (!target.error)
+          grunt.log.ok('   '+target);
         
         writeResults(target, dest);
       };
+      
+      var onError = benchmarks.onCycle;
+      benchmarks.onError = function(event) {
+        if (typeof onError === 'function') {
+          onError.apply(this, arguments);
+        }
         
+        var target = event.target;
+        grunt.log.error('Error running test "'+target.name+'": '+target.error);
+      };
+      
       onComplete = benchmarks.onComplete;
       benchmarks.onComplete = function() {
         if (typeof onComplete === 'function') {
@@ -183,28 +173,17 @@ module.exports = function(grunt) {
       };
       
       // Create a benchmarking suite
-      var suite = new Benchmark.Suite(suiteName, benchmarks);
+      runnable = new Benchmark.Suite(suiteName, benchmarks);
       
       // TODO: tests as either object or array
-      tests.forEach(function(test) { suite.add(test) });
+      tests.forEach(function(test) { runnable.add(test) });
       
       logStart('suite "'+suiteName+'"', src);
-      
-      // Run the suite
-      suite.run();
-      
-      // ben(options.times, grunt.util._.bind(benchmark.fn, context), function(ms) {
-      //   grunt.log.ok(ms + ' ms per iteration');
-      //   if (dest) {
-      //     if (!grunt.file.exists(dest)) {
-      //       grunt.file.write(dest, 'name,date,times,iteration\n');
-      //     }
-      //     var today = (new Date()).toString();
-      //     fs.appendFileSync(dest, [name, '"' + today + '"', options.times, ms].join(',') + '\n');
-      //   }
-      //   n();
-      // });
     }
+    
+    
+    // Run the test(s)
+    runnable.run();
   }
 
   grunt.registerMultiTask('benchmark', 'Grunt task for benchmarking grunt tasks', function() {
