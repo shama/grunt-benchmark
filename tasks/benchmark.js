@@ -207,7 +207,7 @@ module.exports = function(grunt) {
           }
           
           // Calculate how much faster the fastest functions were than the second fastest
-          var timesFaster = (fastest.hz/secondFastest.hz).toFixed(1);
+          var timesFaster = (fastest.hz/secondFastest.hz);
           
           var isAre = 'test is';
           if (fastestTests.length > 1)
@@ -215,18 +215,24 @@ module.exports = function(grunt) {
           
           var message = 'Fastest ' + isAre + ' ' + grunt.log.wordlist([fastestNames], { separator: ' and ' });
           
-          // Give increases color based on order of magnitude of increase
+          // Give increases color based on size of increase
           var increaseColor = false;
-          if (timesFaster > 1.5)
-            increaseColor = 'green';
-          if (timesFaster > 10)
-            increaseColor = 'yellow';
-          if (timesFaster > 100)
+          var places = 1;
+          
+          if (timesFaster >= 50)
             increaseColor = 'red';
+          else if (timesFaster > 10)
+            increaseColor = 'yellow';
+          else if (timesFaster > 1.5)
+            increaseColor = 'green';
+          
+          // Add a few more places for small increases
+          if (timesFaster < 2)
+            places = 2;
           
           // Only bother if there wasn't a tie
           if (fastestTests.length !== tests.length)
-            message += ' at ' + grunt.log.wordlist([Benchmark.formatNumber(timesFaster)+'x'], { color: increaseColor }) + ' faster than ' + grunt.log.wordlist(secondFastestNames, { separator: ' and '});
+            message += ' at ' + grunt.log.wordlist([Benchmark.formatNumber(timesFaster.toFixed(places))+'x'], { color: increaseColor }) + ' faster than ' + grunt.log.wordlist(secondFastestNames, { separator: ' and '});
           
           grunt.log.writeln(message);
         }
