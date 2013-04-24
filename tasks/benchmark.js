@@ -23,7 +23,7 @@ module.exports = function(grunt) {
   }
   
   function logStart(name, src) {
-    grunt.log.writeln('\nBenchmarking '+(name ? name+' ' : '')+'[' + src + ']...');
+    grunt.log.writeln('\nRunning '+(name ? name+' ' : '')+'[' + src + ']...');
   }
   
   function writeResults(target, dest) {
@@ -48,21 +48,26 @@ module.exports = function(grunt) {
   }
 
   function runBench(src, dest, options, next) {
-    var benchmarkOptions;
-    var onComplete;
-    var benchmarks = require(path.join(process.cwd(), src));
+    var singleBenchmark = false;
+    var benchmarkOptions = {};
+    var tests;
+    var runnable;
+    var benchmarkInfo = require(path.join(process.cwd(), src));
 
-    if (typeof benchmarks === 'function') {
+    if (typeof benchmarkInfo === 'function') {
       /*
         // A lone function named by its file
         module.exports = function() {}  // Test function
       */
-      benchmarkOptions = {};
       benchmarkOptions.name = path.basename(src, '.js');
-      benchmarkOptions.fn = benchmarks;
+      benchmarkOptions.fn = benchmarkInfo;
+      singleBenchmark = true;
     }
-    
-    if (typeof benchmarks.name === 'string' && typeof benchmarks.fn === 'function') {
+    else if (typeof benchmarkInfo.name === 'string' && typeof benchmarkInfo.fn === 'function') {
+      if (benchmarkInfo.tests) {
+        grunt.log.error('Invalid benchmark: "'+benchmarkOptions.name+'" specify either export.fn or export.tests ');
+        return next();
+      }
       /*
         // A single test
         module.exports = {
@@ -71,19 +76,10 @@ module.exports = function(grunt) {
           [setup: Function],  // Other Benchmark parameters
           [teardown: Function] // etc
       */
-      benchmarkOptions = benchmarks;
+      benchmarkOptions = benchmarkInfo;
+      singleBenchmark = true;
     }
-    
-    var runnable;
-    
-    // Run a single benchmark
-    if (benchmarkOptions) {
-      // Create a single benchmark
-      runnable = new Benchmark(benchmarkOptions);
-      
-      logStart('"'+benchmarkOptions.name+'"', src);
-    }
-    else {
+    else if (benchmarkInfo.tests) {
       /*
         // A suite of tests
         module.exports = {
@@ -94,13 +90,15 @@ module.exports = function(grunt) {
         }
       */
       
-      // Extract name
-      var suiteName = benchmarks.name || path.basename(src, '.js');
-      delete benchmarks.name;
+      // Set name
+      benchmarkInfo.name = benchmarkInfo.name || path.basename(src, '.js');
       
       // Extract tests
-      var tests = benchmarks.tests;
-      delete benchmarks.tests;
+      tests = benchmarkInfo.tests;
+      delete benchmarkInfo.tests;
+      
+      // Add in options
+      grunt.util._.extend(benchmarkOptions, benchmarkInfo);
       
       if (Array.isArray(tests)) {
         // Ensure all tests are test objects with valid names
@@ -128,59 +126,68 @@ module.exports = function(grunt) {
           return obj;
         });
       }
-      
-      // Setup listeners
-      var onCycle = benchmarks.onCycle;
-      benchmarks.onCycle = function(event) {
-        if (typeof onCycle === 'function') {
-          onCycle.apply(this, arguments);
-        }
-        
-        var target = event.target;
-        
-        if (!target.error)
-          grunt.log.ok('   '+target);
-        
-        writeResults(target, dest);
-      };
-      
-      var onError = benchmarks.onCycle;
-      benchmarks.onError = function(event) {
-        if (typeof onError === 'function') {
-          onError.apply(this, arguments);
-        }
-        
-        var target = event.target;
-        grunt.log.error('Error running test "'+target.name+'": '+target.error);
-      };
-      
-      onComplete = benchmarks.onComplete;
-      benchmarks.onComplete = function() {
-        if (typeof onComplete === 'function') {
-          onComplete.apply(this, arguments);
-        }
-        
-        // Catch errors
-        if (this.error) {
-          grunt.log.error(this.error);
-        }
-        else {
-          grunt.log.writeln('Fastest is ' + Benchmark.pluck(Benchmark.filter(this, 'fastest'), 'name'));
-        }
-        
-        // Run the next test
-        next();
-      };
-      
-      // Create a benchmarking suite
-      runnable = new Benchmark.Suite(suiteName, benchmarks);
-      
-      // TODO: tests as either object or array
-      tests.forEach(function(test) { runnable.add(test) });
-      
-      logStart('suite "'+suiteName+'"', src);
+    }
+    else {
+      grunt.log.error('Invalid configuration: "'+benchmarkOptions.name+'" missing is incorrect');
+      return next();
     }
     
+    if (singleBenchmark) {
+      // Create a single benchmark
+      runnable = new Benchmark(benchmarkOptions);
+      
+      logStart('benchmark '+benchmarkOptions.name, src);
+      
+      // Add test complete listener
+      runnable.on('complete', function() {
+        if (!this.error) {
+          grunt.log.ok(this);
+        }
+        writeResults(this, dest);
+      });
+    }
+    else {
+      // Create a benchmarking suite
+      runnable = new Benchmark.Suite(benchmarkOptions.name, benchmarkOptions);
+    
+      // TODO: tests as either object or array
+      tests.forEach(function(test) { runnable.add(test); });
+      
+      logStart('suite '+benchmarkInfo.name, src);
+      
+      // Add test complete listeners
+      runnable.on('cycle', function(event) {
+        var target = event.target || this;
+        
+        if (!target.error) {
+          grunt.log.ok('   '+target);
+        }
+        
+        writeResults(target, dest);
+      });
+      
+      runnable.on('complete', function() {
+        if (!this.error) {
+          grunt.log.writeln('Fastest is ' + Benchmark.pluck(Benchmark.filter(this, 'fastest'), 'name'));
+        }
+      });
+    }
+    
+    // Add listeners
+    runnable.on('error', function(event) {
+      var target = event.target;
+      grunt.log.error('Error running test "'+target.name+'": '+target.error);
+    });
+    
+    runnable.on('complete', function() {
+      // Catch errors
+      if (this.error) {
+        grunt.log.error(this.error);
+      }
+      
+      // When done, run the next test
+      next();
+    });
     
     // Run the test(s)
     runnable.run();
