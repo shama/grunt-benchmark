@@ -1,5 +1,6 @@
 'use strict';
 
+// A lone function
 module.exports = function(done) {
-  setTimeout(done, 100);
+  return Math.pow(2,31);
 };
