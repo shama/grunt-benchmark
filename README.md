@@ -243,6 +243,30 @@ module.exports = function(done) {
 };
 ```
 
+### Saving output
+Test results will be saved to a CSV file if a destination file is provided.
+
+```javascript
+grunt.initConfig({
+  benchmark: {
+    singleTest: {
+      src: ['benchmarks/fibonacci.js'],
+      dest: 'results/fibonacci.csv'
+    },
+  }
+});
+```
+
+**Results in the following inside of `results/fibonacci.csv`:**
+
+| name               | date                                    | error | count   | cycles  | hz:                 |
+| ------------------ | --------------------------------------- | ----- | -------:| -------:| ------------------: |
+| fibonacci          | Tue Apr 23 2013 21:25:49 GMT-0700 (PDT) |       | 906237  |      4  | 15154635.038364386  |
+| fibonacci_memoized | Tue Apr 23 2013 21:25:54 GMT-0700 (PDT) |       | 1804104 |      4  | 31131880.83560733   |
+| fibonacci          | Tue Apr 23 2013 22:10:55 GMT-0700 (PDT) |       | 910791  |      4  | 13386627.749339204  |
+| fibonacci_memoized | Tue Apr 23 2013 22:11:01 GMT-0700 (PDT) |       | 1764921 |      4  | 30509657.596336514  |
+
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 Lint and test your code using [grunt][grunt].
