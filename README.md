@@ -1,8 +1,6 @@
 # grunt-benchmark
 
-Grunt task for benchmarking.
-
-*Warning: This is experimental and requires the devel version of Grunt.*
+Grunt task for benchmarking with [Benchmark.js].
 
 ## Getting Started
 Install this grunt plugin next to your project's
@@ -52,7 +50,7 @@ Then run the task:
 $ grunt benchmark
 Running "benchmark:all" (benchmark) task
 Benchmarking "0" [benchmarks/test-timeout.js] x10...
-\>\> test-timeout x 418,070 ops/sec ±12.73% (46 runs sampled)
+>> test-timeout x 418,070 ops/sec ±12.73% (46 runs sampled)
 ```
 
 Benchmark name, date, times and per iteration will be logged in a csv format.
@@ -131,8 +129,8 @@ module.exports = {
 $ grunt benchmark
 Running "benchmark:fibonacci" (benchmark) task
 Benchmarking suite "Fibonacci" [benchmarks/fibonacci.js]...
-\>\> fibonacci x 13,386,628 ops/sec ±8.63% (74 runs sampled)
-\>\> fibonacci_memoized x 30,509,658 ops/sec ±2.10% (89 runs sampled)
+>> fibonacci x 13,386,628 ops/sec ±8.63% (74 runs sampled)
+>> fibonacci_memoized x 30,509,658 ops/sec ±2.10% (89 runs sampled)
 Fastest is fibonacci_memoized
 ```
 
@@ -163,10 +161,10 @@ module.exports = {
 };
 ```
 
+<!--
+TODO: Implement this
+
 #### `exports.tests` as an Array:
-
-**TODO: Implement this!**
-
 Set `exports.tests` to an Array of functions and or [Benchmark.js test options].
 
 ```javascript
@@ -195,7 +193,7 @@ module.exports = {
     }
   ]
 };
-```
+-->
 
 
 ### Benchmarking Tasks
@@ -260,4 +258,5 @@ Copyright (c) 2012 Kyle Robinson Young
 Licensed under the MIT license.
 
 
+[Benchmark.js]: http://benchmarkjs.com/
 [task options]: http://benchmarkjs.com/docs#options
