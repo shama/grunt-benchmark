@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = function(done) {
-  setTimeout(done, 5);
+  return Math.pow(2,31);
 };

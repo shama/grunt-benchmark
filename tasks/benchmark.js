@@ -150,6 +150,7 @@ module.exports = function(grunt) {
       // Create a benchmarking suite
       var suite = new Benchmark.Suite(suiteName, benchmarks);
       
+      // TODO: tests as either object or array
       for (var testName in tests) {
         var testData = tests[testName];
         if (typeof testData === 'function') {
