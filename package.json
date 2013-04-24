@@ -29,7 +29,7 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
-    "benchmark": "*"
+    "benchmark": "~1.0.0"
   },
   "keywords": [
     "gruntplugin",
