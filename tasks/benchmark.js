@@ -9,7 +9,7 @@
 module.exports = function(grunt) {
   'use strict';
 
-  var Benchmark = require('Benchmark');
+  var Benchmark = require('benchmark');
   var path = require('path');
   var fs = require('fs');
   var async = grunt.util.async;
