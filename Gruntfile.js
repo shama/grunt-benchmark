@@ -2,21 +2,32 @@ module.exports = function(grunt) {
   'use strict';
   grunt.initConfig({
     benchmark: {
-      test: {
-        src: ['benchmarks/test.js'],
-        dest: 'benchmarks/test.csv',
-        options: { times: 10 }
+      singleTest: {
+        src: ['benchmarks/singleTest.js'],
+        dest: 'results/singleTest.csv'
       },
-      watch: {
-        src: ['benchmarks/watch.js'],
-        dest: 'benchmarks/watch.csv',
-        options: { times: 10 }
+      loneFunction: {
+        src: ['benchmarks/loneFunction.js'],
+        dest: 'results/loneFunction.csv'
       },
-      jshint: {
-        src: ['benchmarks/jshint.js'],
-        dest: 'benchmarks/jshint.csv',
-        options: { times: 10 }
-      }
+      mixedSuite: {
+        src: ['benchmarks/mixedSuite.js'],
+        dest: 'results/mixedSuite.csv'
+      },
+      fibonacci: {
+        src: ['benchmarks/fibonacci.js'],
+        dest: 'results/fibonacci.csv'
+      }//,
+      // watch: {
+      //   src: ['benchmarks/watch.js'],
+      //   dest: 'results/watch.csv',
+      //   options: { times: 10 }
+      // },
+      // jshint: {
+      //   src: ['benchmarks/jshint.js'],
+      //   dest: 'results/jshint.csv',
+      //   options: { times: 10 }
+      // }
     },
     jshint: {
       options: { jshintrc: '.jshintrc' },
