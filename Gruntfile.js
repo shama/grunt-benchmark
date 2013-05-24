@@ -17,17 +17,7 @@ module.exports = function(grunt) {
       fibonacci: {
         src: ['benchmarks/fibonacci.js'],
         dest: 'results/fibonacci.csv'
-      }//,
-      // watch: {
-      //   src: ['benchmarks/watch.js'],
-      //   dest: 'results/watch.csv',
-      //   options: { times: 10 }
-      // },
-      // jshint: {
-      //   src: ['benchmarks/jshint.js'],
-      //   dest: 'results/jshint.csv',
-      //   options: { times: 10 }
-      // }
+      }
     },
     jshint: {
       options: { jshintrc: '.jshintrc' },
