@@ -27,7 +27,7 @@ var fibonacci = function(n) {
 };
 
 module.exports = function() {
-  fibbonacci(10);
+  fibonacci(10);
 };
 ```
 
@@ -249,10 +249,27 @@ grunt.initConfig({
     singleTest: {
       src: ['benchmarks/fibonacci.js'],
       dest: 'results/fibonacci.csv'
-    },
+    }
   }
 });
 ```
+
+You can specify a truthy `displayResults` option inside your Grunt config to
+display the results using [cli-table](https://github.com/LearnBoost/cli-table).
+
+It will automatically pick up the `dest` property, so that must be set for this
+to work.
+
+```javascript
+grunt.initConfig({
+  benchmark: {
+    singleTest: {
+      src: ['benchmarks/fibonacci.js'],
+      dest: 'results/fibonacci.csv',
+      displayResults: true
+    }
+  }
+});
 
 **Results in the following inside of `results/fibonacci.csv`:**
 
