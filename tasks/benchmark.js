@@ -30,11 +30,11 @@ module.exports = function(grunt) {
             });
 
             // Create a new table.
-            var table = new Table({ header: headers });
+            var table = new Table({ head: headers });
             table.push.apply(table, rows);
 
             // Render out the table.
-            grunt.log.write(table);
+            grunt.log.write('\nResults:\n' + table);
           }
 
           // Continue.
