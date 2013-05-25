@@ -263,10 +263,14 @@ to work.
 ```javascript
 grunt.initConfig({
   benchmark: {
+    options: {
+      // This can also be set inside specific tests.
+      displayResults: true
+    },
+
     singleTest: {
       src: ['benchmarks/fibonacci.js'],
-      dest: 'results/fibonacci.csv',
-      displayResults: true
+      dest: 'results/fibonacci.csv'
     }
   }
 });
