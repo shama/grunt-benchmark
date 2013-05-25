@@ -40,6 +40,7 @@
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-nodeunit": "~0.1.2",
     "grunt-contrib-watch": "~0.2.0",
-    "ncp": "~0.2.6"
+    "ncp": "~0.2.6",
+    "cli-table": "~0.2.0"
   }
 }

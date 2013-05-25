@@ -27,7 +27,7 @@ var fibonacci = function(n) {
 };
 
 module.exports = function() {
-  fibbonacci(10);
+  fibonacci(10);
 };
 ```
 
@@ -249,20 +249,55 @@ grunt.initConfig({
     singleTest: {
       src: ['benchmarks/fibonacci.js'],
       dest: 'results/fibonacci.csv'
-    },
+    }
   }
 });
 ```
 
-**Results in the following inside of `results/fibonacci.csv`:**
+You can specify a truthy `displayResults` option inside your Grunt config to
+display the results using [cli-table](https://github.com/LearnBoost/cli-table).
 
-| name               | date                                    | error | count   | cycles  | hz:                 |
-| ------------------ | --------------------------------------- | ----- | -------:| -------:| ------------------: |
-| fibonacci          | Tue Apr 23 2013 21:25:49 GMT-0700 (PDT) |       | 906237  |      4  | 15154635.038364386  |
-| fibonacci_memoized | Tue Apr 23 2013 21:25:54 GMT-0700 (PDT) |       | 1804104 |      4  | 31131880.83560733   |
-| fibonacci          | Tue Apr 23 2013 22:10:55 GMT-0700 (PDT) |       | 910791  |      4  | 13386627.749339204  |
-| fibonacci_memoized | Tue Apr 23 2013 22:11:01 GMT-0700 (PDT) |       | 1764921 |      4  | 30509657.596336514  |
+It will automatically pick up the `dest` property, so that must be set for this
+to work.
 
+```javascript
+grunt.initConfig({
+  benchmark: {
+    options: {
+      // This can also be set inside specific tests.
+      displayResults: true
+    },
+
+    singleTest: {
+      src: ['benchmarks/fibonacci.js'],
+      dest: 'results/fibonacci.csv'
+    }
+  }
+});
+```
+
+The output will look something like:
+
+```bash
+Running "benchmark:fibonacci" (benchmark) task
+
+Running suite Fibonacci [benchmarks/fibonacci.js]...
+>> fibonacci x 13,386,628 ops/sec ±8.63% (74 runs sampled)
+>> fibonacci_memoized x 30,509,658 ops/sec ±2.10% (89 runs sampled)
+
+Results:
+┌──────────────────────┬───────────────────────────────────────────┬───────┬─────────┬────────┬────────────────────┐
+│ name                 │ date                                      │ error │ count   │ cycles │ hz                 │
+├──────────────────────┼───────────────────────────────────────────┼───────┼─────────┼────────┼────────────────────┤
+│ "fibonacci"          │ "Tue Apr 23 2013 21:25:49 GMT-0700 (PDT)" │       │ 906237  │ 4      │ 15154635.038364386 │
+├──────────────────────┼───────────────────────────────────────────┼───────┼─────────┼────────┼────────────────────┤
+│ "fibonacci_memoized" │ "Fri May 24 2013 19:52:02 GMT-0400 (EDT)" │       │ 1804104 │ 4      │ 31131880.83560733  │
+├──────────────────────┼───────────────────────────────────────────┼───────┼─────────┼────────┼────────────────────┤
+│ "fibonacci"          │ "Tue Apr 23 2013 22:10:55 GMT-0700 (PDT)" │       │ 910791  │ 4      │ 13386627.749339204 │
+├──────────────────────┼───────────────────────────────────────────┼───────┼─────────┼────────┼────────────────────┤
+│ "fibonacci_memoized" │ "Fri May 24 2013 19:52:11 GMT-0400 (EDT)" │       │ 1764921 │ 4      │ 30509657.596336514 │
+└──────────────────────┴───────────────────────────────────────────┴───────┴─────────┴────────┴────────────────────┘
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style.
