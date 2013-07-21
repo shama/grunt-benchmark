@@ -222,7 +222,7 @@ module.exports = function(done) {
 
     // After trigger found, run this sync function
     // this will trigger the watch task
-    grunt.file.write('path/to/file.js'), 'var test = false;');
+    grunt.file.write('path/to/file.js', 'var test = false;');
 
   }, function() {
 
