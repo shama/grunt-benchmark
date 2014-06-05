@@ -20,9 +20,9 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      options: { jshintrc: '.jshintrc' },
+      options: { jshintrc: true },
       all: {
-        src: ['Gruntfile.js', 'lib/**/*.js', 'tasks/**/*.js', 'benchmarks/**/*.js']
+        src: ['Gruntfile.js', 'lib/**/*.js', 'tasks/**/*.js', 'benchmarks/*.js']
       }
     },
     nodeunit: {
