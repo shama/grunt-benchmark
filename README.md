@@ -241,7 +241,7 @@ module.exports = function(done) {
 ```
 
 ### Saving output
-Test results will be saved to a CSV file if a destination file is provided.
+Test results will be saved to a file if a destination file is provided.
 
 ```javascript
 grunt.initConfig({
@@ -249,6 +249,22 @@ grunt.initConfig({
     singleTest: {
       src: ['benchmarks/fibonacci.js'],
       dest: 'results/fibonacci.csv'
+    }
+  }
+});
+```
+
+Results can be saved as 'csv' or 'json'. The format is determined from the `dest` file extension or by setting the `format` option:
+
+```javascript
+grunt.initConfig({
+  benchmark: {
+    singleTest: {
+      src: ['benchmarks/fibonacci.js'],
+      dest: 'results/fibonacci.txt',
+      options : {
+        format: 'csv'
+      }
     }
   }
 });
