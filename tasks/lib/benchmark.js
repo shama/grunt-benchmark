@@ -14,6 +14,8 @@ module.exports = function(grunt) {
   var path = require('path');
   var fs = require('fs');
   var async = grunt.util.async;
+  
+  var writers = require('./writers');
 
   // Turn function into an object
   exports.objectify = function objectify(obj) {
@@ -24,24 +26,26 @@ module.exports = function(grunt) {
     grunt.log.writeln('\nRunning ' + (name ? name + ' ' : '') + '[' + src + ']...');
   };
 
-  exports.writeResults = function writeResults(target, dest) {
+  exports.writeResults = function writeResults(target, dest, options) {
     if (dest) {
-      // Create the file withe the column headers
-      if (!grunt.file.exists(dest)) {
-        grunt.file.write(dest, 'name,date,error,count,cycles,hz\n');
+      var format = options.format;
+      if(!format){
+        format = path.extname(dest ).substring(1);
       }
-
-      // Append a line with the test results
-      var line = [
-          '"' + target.name + '"',
-          '"' + (new Date()).toString() + '"',
-          target.error,
-          target.count,
-          target.cycles,
-          target.hz
-      ].join(',') + '\n';
-
-      fs.appendFileSync(dest, line);
+      var writer = writers[format]; 
+      if (writer){
+        var vo = {
+          name : target.name,
+          timestamp : (new Date()).toString(),
+          error : target.error,
+          count : target.count,
+          cycles: target.cycles,
+          hz : target.hz
+        };
+        writer.call(null, dest, vo, grunt);
+      }else{
+        grunt.log.error('Could not write file "'+dest+'": invalid format requested');
+      }
     }
   };
 
@@ -146,7 +150,7 @@ module.exports = function(grunt) {
         if (!this.error) {
           grunt.log.ok(this);
         }
-        exports.writeResults(this, dest);
+        exports.writeResults(this, dest, options);
       });
     }
     else {
@@ -166,7 +170,7 @@ module.exports = function(grunt) {
           grunt.log.ok('   ' + target);
         }
 
-        exports.writeResults(target, dest);
+        exports.writeResults(target, dest, options);
       });
 
       runnable.on('complete', function() {
