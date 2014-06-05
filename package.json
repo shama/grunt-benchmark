@@ -26,7 +26,7 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt nodeunit -v"
   },
   "dependencies": {
     "benchmark": "~1.0.0",
@@ -39,8 +39,8 @@
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-nodeunit": "~0.1.2",
-    "grunt-contrib-watch": "~0.2.0",
+    "grunt-contrib-nodeunit": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1",
     "ncp": "~0.2.6"
   }
 }

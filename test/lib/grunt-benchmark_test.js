@@ -54,7 +54,7 @@ exports.benchmark = {
 
     }], function(result) {
 
-      test.ok((result.indexOf('Waiting...OK') !== -1), 'Should have shown Waiting...OK');
+      test.ok((result.indexOf('Waiting...') !== -1), 'Should have shown Waiting...');
       test.ok((result.indexOf('File "watch' + path.sep + 'test.js" changed.') !== -1), 'Should have shown a file was changed.');
 
       test.done();

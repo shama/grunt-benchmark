@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   'use strict';
   grunt.initConfig({
-    nothing: {},
     watch: {
       all: {
         files: ['**/*.js'],
@@ -10,6 +9,5 @@ module.exports = function(grunt) {
     }
   });
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadTasks('tasks');
-  grunt.registerTask('default', ['nothing']);
+  grunt.registerTask('default', function() {});
 };
