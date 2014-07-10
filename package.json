@@ -1,7 +1,7 @@
 {
   "name": "grunt-benchmark",
   "description": "Grunt task for benchmarking",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://github.com/shama/grunt-benchmark",
   "author": {
     "name": "Kyle Robinson Young",
