@@ -196,7 +196,7 @@ benchmarks. This example will create a function to run the `watch` task:
 
 ```javascript
 // benchmarks/watch.js
-// Create a spawnable watch task. Doesnt actually spawn until called.
+// Create a spawnable watch task. Doesn't actually spawn until called.
 var watchTask = require('grunt-benchmark').spawnTask('watch', {
 
   // Text trigger to look for to know when to run the next step or exit
