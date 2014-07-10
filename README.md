@@ -12,9 +12,6 @@ Then add this line to your project's Gruntfile:
 grunt.loadNpmTasks('grunt-benchmark');
 ```
 
-[grunt]: https://github.com/cowboy/grunt
-[getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
-
 ## Documentation
 
 ### Basic Usage Example
@@ -327,9 +324,10 @@ Lint and test your code using [grunt][grunt].
 * 0.1.0 Initial release
 
 ## License
-Copyright (c) 2014 Kyle Robinson Young
+Copyright (c) 2014 Kyle Robinson Young  
 Licensed under the MIT license.
 
-
+[grunt]: https://github.com/gruntjs/grunt
+[getting_started]: https://gruntjs.com/getting-started
 [Benchmark.js]: http://benchmarkjs.com/
 [task options]: http://benchmarkjs.com/docs#options
