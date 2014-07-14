@@ -42,6 +42,9 @@ module.exports = function(grunt) {
           cycles: target.cycles,
           hz : target.hz
         };
+        if (target.suite) { 
+          vo.suite = target.suite; 
+        }
         writer.call(null, dest, vo, grunt);
       }else{
         grunt.log.error('Could not write file "'+dest+'": invalid format requested');
@@ -169,7 +172,7 @@ module.exports = function(grunt) {
         if (!target.error) {
           grunt.log.ok('   ' + target);
         }
-
+        target.suite = benchmarkInfo.name;
         exports.writeResults(target, dest, options);
       });
 
