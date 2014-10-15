@@ -28,7 +28,7 @@ module.exports = function() {
 };
 ```
 
-The setup your Gruntfile config to run the benchmarks within the `benchmarks/` folder:
+Then setup your Gruntfile config to run the benchmarks within the `benchmarks/` folder:
 
 ```javascript
 grunt.initConfig({
