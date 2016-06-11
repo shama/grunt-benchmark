@@ -269,6 +269,12 @@ module.exports = function(grunt) {
           }
 
           grunt.log.writeln(message);
+
+          if (options.verifyFastest) {
+            if (fastestNames.indexOf(options.verifyFastest) === -1) {
+              grunt.fail.warn(options.verifyFastest + ' was not in the fastest tests.');
+            }
+          }
         }
       });
     }

@@ -20,7 +20,10 @@ module.exports = function(grunt) {
       },
       fibonacci: {
         src: ['benchmarks/fibonacci.js'],
-        dest: 'results/fibonacci.csv'
+        dest: 'results/fibonacci.csv',
+        options: {
+          verifyFastest: 'fibonacci_memoized'
+        }
       }
     },
     jshint: {
