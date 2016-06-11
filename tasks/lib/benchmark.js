@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   var path = require('path');
   var fs = require('fs');
   var async = grunt.util.async;
-  
+
   var writers = require('./writers');
 
   // Turn function into an object
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       if(!format){
         format = path.extname(dest ).substring(1);
       }
-      var writer = writers[format]; 
+      var writer = writers[format];
       if (writer){
         var vo = {
           name : target.name,
@@ -42,8 +42,8 @@ module.exports = function(grunt) {
           cycles: target.cycles,
           hz : target.hz
         };
-        if (target.suite) { 
-          vo.suite = target.suite; 
+        if (target.suite) {
+          vo.suite = target.suite;
         }
         writer.call(null, dest, vo, grunt);
       }else{
@@ -53,11 +53,15 @@ module.exports = function(grunt) {
   };
 
   exports.runBench = function runBench(src, dest, options, next) {
+    var benchmarkInfo = require(path.join(process.cwd(), src));
+    runLoadedBench(src, benchmarkInfo, dest, options, next);
+  };
+
+  function runLoadedBench(src, benchmarkInfo, dest, options, next){
     var singleBenchmark = false;
     var benchmarkOptions = {};
     var tests;
     var runnable;
-    var benchmarkInfo = require(path.join(process.cwd(), src));
 
     if (typeof benchmarkInfo === 'function') {
       /*
@@ -67,8 +71,25 @@ module.exports = function(grunt) {
       benchmarkOptions.name = path.basename(src, '.js');
       benchmarkOptions.fn = benchmarkInfo;
       singleBenchmark = true;
-    }
-    else {
+    } else if(Array.isArray(benchmarkInfo)){
+
+      var tasks = [];
+
+      var createTask = function(benchmarkInfo) {
+        return function(callback) {
+          runLoadedBench(src, benchmarkInfo, dest, options, callback);
+        };
+      };
+
+      for (var i = 0; i < benchmarkInfo.length; i++) {
+        tasks.push(createTask(benchmarkInfo[i]));
+      }
+
+      async.series(tasks, function() {
+        next();
+      });
+      return;
+    } else {
       // Copy it so we can modify it without breaking future tests
       benchmarkInfo = grunt.util._.extend({}, benchmarkInfo);
 
@@ -270,7 +291,7 @@ module.exports = function(grunt) {
 
     // Run the test(s)
     runnable.run();
-  };
+  }
 
   return exports;
 };

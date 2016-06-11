@@ -10,6 +10,10 @@ module.exports = function(grunt) {
         src: ['benchmarks/loneFunction.js'],
         dest: 'results/loneFunction.csv'
       },
+      suites: {
+        src: ['benchmarks/suites.js'],
+        dest: 'results/suites.csv'
+      },
       mixedSuite: {
         src: ['benchmarks/mixedSuite.js'],
         dest: 'results/mixedSuite.csv'
