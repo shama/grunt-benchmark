@@ -270,9 +270,24 @@ module.exports = function(grunt) {
 
           grunt.log.writeln(message);
 
-          if (options.verifyFastest) {
-            if (fastestNames.indexOf(options.verifyFastest) === -1) {
-              grunt.fail.warn(options.verifyFastest + ' was not in the fastest tests.');
+          var verifyFastestName = options.verifyFastest;
+          if (verifyFastestName) {
+            if (typeof verifyFastestName === 'object') {
+              var exclude = verifyFastestName.exclude;
+              if (exclude) {
+                if (typeof exclude === 'string') {
+                  exclude = [exclude];
+                }
+                var excludedList = this.filter(function(suite) {
+                  return exclude.indexOf(suite.name) === -1;
+                });
+                fastestNames = Benchmark.pluck(Benchmark.filter(excludedList, 'fastest'), 'name');
+              }
+              verifyFastestName = verifyFastestName.fastest;
+            }
+
+            if (fastestNames.indexOf(verifyFastestName) === -1) {
+              grunt.fail.warn(verifyFastestName + ' was not in the fastest tests.');
             }
           }
         }
