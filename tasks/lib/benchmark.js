@@ -53,8 +53,24 @@ module.exports = function(grunt) {
   };
 
   exports.runBench = function runBench(src, dest, options, next) {
+    var previousOptions = {};
+    if (options.benchmarkOptions) {
+      for (var i in options.benchmarkOptions) {
+        if (options.benchmarkOptions.hasOwnProperty(i)) {
+          previousOptions[i] = Benchmark.options[i];
+          Benchmark.options[i] = options.benchmarkOptions[i];
+        }
+      }
+    }
     var benchmarkInfo = require(path.join(process.cwd(), src));
-    runLoadedBench(src, benchmarkInfo, dest, options, next);
+    runLoadedBench(src, benchmarkInfo, dest, options, function() {
+      for (var i in previousOptions) {
+        if (previousOptions.hasOwnProperty(i)) {
+          Benchmark.options[i] = previousOptions[i];
+        }
+      }
+      next();
+    });
   };
 
   function runLoadedBench(src, benchmarkInfo, dest, options, next){
