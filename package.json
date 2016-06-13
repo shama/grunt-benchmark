@@ -29,7 +29,7 @@
     "test": "grunt -v"
   },
   "dependencies": {
-    "benchmark": "~1.0.0",
+    "benchmark": "^2.1.0",
     "cli-table": "~0.2.0"
   },
   "keywords": [

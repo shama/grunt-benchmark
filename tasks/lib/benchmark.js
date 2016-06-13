@@ -230,7 +230,7 @@ module.exports = function(grunt) {
           var fastest = fastestTests[0];
 
           // Extract their names
-          var fastestNames = Benchmark.pluck(fastestTests, 'name');
+          var fastestNames = Benchmark.map(fastestTests, 'name');
 
           // Get the second fastest
           var secondFastestTests;
@@ -239,7 +239,7 @@ module.exports = function(grunt) {
           if (fastestTests.length > 1) {
             secondFastestTests = Benchmark.filter(fastestTests.slice(1), 'fastest');
             secondFastest = secondFastestTests[0];
-            secondFastestNames = Benchmark.pluck(secondFastestTests, 'name');
+            secondFastestNames = Benchmark.map(secondFastestTests, 'name');
           }
           else {
             var slowerTests = grunt.util._.reject(tests, function(obj) {
@@ -247,7 +247,7 @@ module.exports = function(grunt) {
             });
             secondFastestTests = Benchmark.filter(slowerTests, 'fastest').reverse();
             secondFastest = secondFastestTests[0];
-            secondFastestNames = Benchmark.pluck(secondFastestTests, 'name');
+            secondFastestNames = Benchmark.map(secondFastestTests, 'name');
           }
 
           // Calculate how much faster the fastest functions were than the second fastest
@@ -297,7 +297,7 @@ module.exports = function(grunt) {
                 var excludedList = this.filter(function(suite) {
                   return exclude.indexOf(suite.name) === -1;
                 });
-                fastestNames = Benchmark.pluck(Benchmark.filter(excludedList, 'fastest'), 'name');
+                fastestNames = Benchmark.map(Benchmark.filter(excludedList, 'fastest'), 'name');
               }
               verifyFastestName = verifyFastestName.fastest;
             }
