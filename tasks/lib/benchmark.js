@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   var path = require('path');
   var fs = require('fs');
   var async = grunt.util.async;
-  
+
   var writers = require('./writers');
 
   // Turn function into an object
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       if(!format){
         format = path.extname(dest ).substring(1);
       }
-      var writer = writers[format]; 
+      var writer = writers[format];
       if (writer){
         var vo = {
           name : target.name,
@@ -42,8 +42,8 @@ module.exports = function(grunt) {
           cycles: target.cycles,
           hz : target.hz
         };
-        if (target.suite) { 
-          vo.suite = target.suite; 
+        if (target.suite) {
+          vo.suite = target.suite;
         }
         writer.call(null, dest, vo, grunt);
       }else{
@@ -53,11 +53,31 @@ module.exports = function(grunt) {
   };
 
   exports.runBench = function runBench(src, dest, options, next) {
+    var previousOptions = {};
+    if (options.benchmarkOptions) {
+      for (var i in options.benchmarkOptions) {
+        if (options.benchmarkOptions.hasOwnProperty(i)) {
+          previousOptions[i] = Benchmark.options[i];
+          Benchmark.options[i] = options.benchmarkOptions[i];
+        }
+      }
+    }
+    var benchmarkInfo = require(path.join(process.cwd(), src));
+    runLoadedBench(src, benchmarkInfo, dest, options, function() {
+      for (var i in previousOptions) {
+        if (previousOptions.hasOwnProperty(i)) {
+          Benchmark.options[i] = previousOptions[i];
+        }
+      }
+      next();
+    });
+  };
+
+  function runLoadedBench(src, benchmarkInfo, dest, options, next){
     var singleBenchmark = false;
     var benchmarkOptions = {};
     var tests;
     var runnable;
-    var benchmarkInfo = require(path.join(process.cwd(), src));
 
     if (typeof benchmarkInfo === 'function') {
       /*
@@ -67,8 +87,25 @@ module.exports = function(grunt) {
       benchmarkOptions.name = path.basename(src, '.js');
       benchmarkOptions.fn = benchmarkInfo;
       singleBenchmark = true;
-    }
-    else {
+    } else if(Array.isArray(benchmarkInfo)){
+
+      var tasks = [];
+
+      var createTask = function(benchmarkInfo) {
+        return function(callback) {
+          runLoadedBench(src, benchmarkInfo, dest, options, callback);
+        };
+      };
+
+      for (var i = 0; i < benchmarkInfo.length; i++) {
+        tasks.push(createTask(benchmarkInfo[i]));
+      }
+
+      async.series(tasks, function() {
+        next();
+      });
+      return;
+    } else {
       // Copy it so we can modify it without breaking future tests
       benchmarkInfo = grunt.util._.extend({}, benchmarkInfo);
 
@@ -193,7 +230,7 @@ module.exports = function(grunt) {
           var fastest = fastestTests[0];
 
           // Extract their names
-          var fastestNames = Benchmark.pluck(fastestTests, 'name');
+          var fastestNames = Benchmark.map(fastestTests, 'name');
 
           // Get the second fastest
           var secondFastestTests;
@@ -202,7 +239,7 @@ module.exports = function(grunt) {
           if (fastestTests.length > 1) {
             secondFastestTests = Benchmark.filter(fastestTests.slice(1), 'fastest');
             secondFastest = secondFastestTests[0];
-            secondFastestNames = Benchmark.pluck(secondFastestTests, 'name');
+            secondFastestNames = Benchmark.map(secondFastestTests, 'name');
           }
           else {
             var slowerTests = grunt.util._.reject(tests, function(obj) {
@@ -210,7 +247,7 @@ module.exports = function(grunt) {
             });
             secondFastestTests = Benchmark.filter(slowerTests, 'fastest').reverse();
             secondFastest = secondFastestTests[0];
-            secondFastestNames = Benchmark.pluck(secondFastestTests, 'name');
+            secondFastestNames = Benchmark.map(secondFastestTests, 'name');
           }
 
           // Calculate how much faster the fastest functions were than the second fastest
@@ -248,6 +285,27 @@ module.exports = function(grunt) {
           }
 
           grunt.log.writeln(message);
+
+          var verifyFastestName = options.verifyFastest;
+          if (verifyFastestName) {
+            if (typeof verifyFastestName === 'object') {
+              var exclude = verifyFastestName.exclude;
+              if (exclude) {
+                if (typeof exclude === 'string') {
+                  exclude = [exclude];
+                }
+                var excludedList = this.filter(function(suite) {
+                  return exclude.indexOf(suite.name) === -1;
+                });
+                fastestNames = Benchmark.map(Benchmark.filter(excludedList, 'fastest'), 'name');
+              }
+              verifyFastestName = verifyFastestName.fastest;
+            }
+
+            if (fastestNames.indexOf(verifyFastestName) === -1) {
+              grunt.fail.warn(verifyFastestName + ' was not in the fastest tests.');
+            }
+          }
         }
       });
     }
@@ -270,7 +328,7 @@ module.exports = function(grunt) {
 
     // Run the test(s)
     runnable.run();
-  };
+  }
 
   return exports;
 };
