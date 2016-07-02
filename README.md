@@ -317,6 +317,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 Lint and test your code using [grunt][grunt].
 
 ## Release History
+* 1.0.0 Support multiple suites in one file (@zoltan-mihalyi). Update deps.
 * 0.3.0 Add json output format (@creynders).
 * 0.2.0 Switched to benchmark.js. Huge thanks to @lazd!
 * 0.1.3 Ability to log dest to a csv file. Support Grunt@0.4.0rc7.
@@ -325,7 +326,7 @@ Lint and test your code using [grunt][grunt].
 * 0.1.0 Initial release
 
 ## License
-Copyright (c) 2014 Kyle Robinson Young  
+Copyright (c) 2016 Kyle Robinson Young  
 Licensed under the MIT license.
 
 [grunt]: https://github.com/gruntjs/grunt
