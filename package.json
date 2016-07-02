@@ -40,6 +40,6 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-nodeunit": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "ncp": "^0.5.1"
+    "ncp": "^2.0.0"
   }
 }
