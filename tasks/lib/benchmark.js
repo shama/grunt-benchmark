@@ -52,11 +52,6 @@ module.exports = function(grunt) {
     }
   };
 
-  exports.runBench = function runBench(src, dest, options, next) {
-    var benchmarkInfo = require(path.join(process.cwd(), src));
-    runLoadedBench(src, benchmarkInfo, dest, options, next);
-  };
-
   function runLoadedBench(src, benchmarkInfo, dest, options, next){
     var singleBenchmark = false;
     var benchmarkOptions = {};
@@ -292,6 +287,11 @@ module.exports = function(grunt) {
     // Run the test(s)
     runnable.run();
   }
+
+  exports.runBench = function runBench(src, dest, options, next) {
+    var benchmarkInfo = require(path.join(process.cwd(), src));
+    runLoadedBench(src, benchmarkInfo, dest, options, next);
+  };
 
   return exports;
 };
