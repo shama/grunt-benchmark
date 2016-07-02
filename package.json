@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "benchmark": "~1.0.0",
-    "cli-table": "~0.2.0"
+    "cli-table": "^0.3.1"
   },
   "keywords": [
     "gruntplugin",
