@@ -17,6 +17,10 @@
   },
   "license": "MIT",
   "main": "lib/grunt-benchmark.js",
+  "files": [
+    "tasks",
+    "lib"
+  ],
   "engines": {
     "node": ">= 0.10.0"
   },
